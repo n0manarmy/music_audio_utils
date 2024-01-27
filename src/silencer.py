@@ -52,7 +52,7 @@ def run(in_dir, out_dir):
                 except Exception as err:
                     print("Error processing: ", f, "\n\n\n")
                     print(err)
-                    break
+                    continue
 
                 # print("Sample len: ", sample_len, " done.\n\n")
 
