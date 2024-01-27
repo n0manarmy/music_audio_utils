@@ -34,7 +34,8 @@ def run_converter():
 
 def main():
     root = Tk()
-    root.maxsize(200, 200)
+    root.maxsize(400, 200)
+    root.minsize(400, 200)
     frm = ttk.Frame(root, padding=10, width=200, height=20)
     # frm.grid()
     splitter_button = ttk.Button(frm, text="Splitter", command=run_splitter)

@@ -13,10 +13,19 @@ def main():
     out_dir = sys.argv[2]
     run(in_dir, out_dir)
 
+def trim_lead(wav):
+    return wav[detect_leading_silence(wav):]
+
+
+def trim_tail(wav):
+    return wav[detect_leading_silence(wav):]
+    # return wav[detect_leading_silence(wav):]
+
+
 def run(in_dir, out_dir):
-    trim_leading_silence = lambda x: x[detect_leading_silence(x) :]
-    trim_trailing_silence = lambda x: trim_leading_silence(x.reverse()).reverse()
-    strip_silence = lambda x: trim_trailing_silence(trim_leading_silence(x))
+    # trim_leading_silence = lambda x: x[detect_leading_silence(x) :]
+    # trim_trailing_silence = lambda x: trim_leading_silence(x.reverse()).reverse()
+    # strip_silence = lambda x: trim_trailing_silence(trim_leading_silence(x))
 
     # dir_list = os.dirwalk(in_dir)
     files_processed = 0
@@ -32,7 +41,10 @@ def run(in_dir, out_dir):
                 # print(song_file.replace(in_dir, out_dir))
                 try:
                     song = AudioSegment.from_wav(song_file)
-                    stripped: AudioSegment = strip_silence(song)
+                    stripped: AudioSegment = trim_lead(song)
+                    stripped: AudioSegment = trim_tail(stripped.reverse())
+                    stripped = stripped.reverse()
+                    # stripped: AudioSegment = strip_silence(song)
                     stripped.export(song_file_out, format="wav")
                     files_processed += 1
                     if files_processed % 100 == 0:
@@ -40,7 +52,7 @@ def run(in_dir, out_dir):
                 except Exception as err:
                     print("Error processing: ", f, "\n\n\n")
                     print(err)
-                    continue
+                    break
 
                 # print("Sample len: ", sample_len, " done.\n\n")
 
